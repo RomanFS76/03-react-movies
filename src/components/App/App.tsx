@@ -6,7 +6,7 @@ import './App.module.css';
 import toast, { Toaster } from 'react-hot-toast';
 import Loader from '../Loader/Loader';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
-
+import MovieGrid from '../MovieGrid/MovieGrid';
 
 const App = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -38,8 +38,6 @@ const App = () => {
       }
 
       setMovies(responce);
-
-      
     } catch {
       setIsError(true);
     } finally {
@@ -54,6 +52,7 @@ const App = () => {
       <SearchBar onSubmit={handleSearch} />
       {isLoader && <Loader />}
       {isError && <ErrorMessage />}
+      {movies.length > 0 && <MovieGrid movies={movies} />}
       <Toaster />
     </>
   );
