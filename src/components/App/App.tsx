@@ -5,14 +5,18 @@ import SearchBar from '../SearchBar/SearchBar';
 import './App.module.css';
 import toast, { Toaster } from 'react-hot-toast';
 import Loader from '../Loader/Loader';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
+
 
 const App = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isLoader, setIsLoader] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const handleSearch = async (query: string) => {
     try {
       setIsLoader(true);
+      setIsError(false);
       const responce = await fetchMovies(query);
 
       if (responce.length === 0) {
@@ -35,13 +39,9 @@ const App = () => {
 
       setMovies(responce);
 
-      return responce;
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        console.log(err.message);
-      } else {
-        console.log(String(err));
-      }
+      
+    } catch {
+      setIsError(true);
     } finally {
       setIsLoader(false);
     }
@@ -53,6 +53,7 @@ const App = () => {
     <>
       <SearchBar onSubmit={handleSearch} />
       {isLoader && <Loader />}
+      {isError && <ErrorMessage />}
       <Toaster />
     </>
   );
