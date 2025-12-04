@@ -20,13 +20,14 @@ const App = () => {
 
   const closeModal = () => setModalOpen(false);
 
-   const handleSelect = (movie: Movie) => {
+  const handleSelect = (movie: Movie) => {
     setSelectedMovie(movie);
     openModal();
   };
 
   const handleSearch = async (query: string) => {
     try {
+      setMovies([]);
       setIsLoader(true);
       setIsError(false);
       const responce = await fetchMovies(query);
@@ -64,8 +65,12 @@ const App = () => {
       <SearchBar onSubmit={handleSearch} />
       {isLoader && <Loader />}
       {isError && <ErrorMessage />}
-      {movies.length > 0 && <MovieGrid movies={movies} onSelect={handleSelect} />}
-      {ModalOpen && <MovieModal onClose={closeModal} movie={selectedMovie} />}
+      {movies.length > 0 && (
+        <MovieGrid movies={movies} onSelect={handleSelect} />
+      )}
+      {ModalOpen && (
+        <MovieModal onClose={closeModal} movie={selectedMovie}></MovieModal>
+      )}
       <Toaster />
     </>
   );

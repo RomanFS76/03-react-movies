@@ -1,15 +1,43 @@
 import { createPortal } from 'react-dom';
 import css from './MovieModal.module.css';
 import type { Movie } from '../../types/movie';
+import { useEffect } from 'react';
 
 interface MovieModalProps {
-  movie:Movie,
+  movie: Movie;
   onClose: () => void;
+  children: React.ReactNode;
 }
 
-const MovieModal = ({ movie,onClose }: MovieModalProps) => {
+const MovieModal = ({ movie, onClose }: MovieModalProps) => {
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [onClose]);
   return createPortal(
-    <div className={css.backdrop} role="dialog" aria-modal="true">
+    <div
+      className={css.backdrop}
+      role="dialog"
+      aria-modal="true"
+      onClick={handleBackdropClick}
+    >
       <div className={css.modal}>
         <button
           className={css.closeButton}
@@ -19,7 +47,11 @@ const MovieModal = ({ movie,onClose }: MovieModalProps) => {
           &times;
         </button>
         <img
-          src={movie.backdrop_path?`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`:'/noPoster.png'}
+          src={
+            movie.backdrop_path
+              ? `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`
+              : '/noPoster.png'
+          }
           alt="movie_title"
           className={css.image}
         />
