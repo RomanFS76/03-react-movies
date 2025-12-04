@@ -1,6 +1,11 @@
 import styles from './SearchBar.module.css';
 
 const SearchBar = () => {
+  const handleSearch = (formData: FormData) => {
+    const query = formData.get('query') as string;
+    console.log(query);
+  };
+
   return (
     <header className={styles.header}>
       <div className={styles.container}>
@@ -12,7 +17,7 @@ const SearchBar = () => {
         >
           Powered by TMDB
         </a>
-        <form className={styles.form}>
+        <form className={styles.form} action={handleSearch}>
           <input
             className={styles.input}
             type="text"
