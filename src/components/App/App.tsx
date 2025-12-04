@@ -1,11 +1,12 @@
-
+import SearchBar from '../SearchBar/SearchBar';
 import './App.module.css';
-
 
 const App = () => {
   return (
-    <div>App</div>
-  )
-}
+    <>
+      <SearchBar />
+    </>
+  );
+};
 
-export default App
+export default App;
