@@ -14,11 +14,13 @@ const App = () => {
   const [isLoader, setIsLoader] = useState(false);
   const [isError, setIsError] = useState(false);
   const [ModalOpen, setModalOpen] = useState(false);
-  const [selectedMovie, setSelectedMovie] = useState({} as Movie);
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
   const openModal = () => setModalOpen(true);
 
-  const closeModal = () => setModalOpen(false);
+  const closeModal = () => {
+    setSelectedMovie(null);
+    setModalOpen(false)};
 
   const handleSelect = (movie: Movie) => {
     setSelectedMovie(movie);
@@ -68,9 +70,7 @@ const App = () => {
       {movies.length > 0 && (
         <MovieGrid movies={movies} onSelect={handleSelect} />
       )}
-      {ModalOpen && (
-        <MovieModal onClose={closeModal} movie={selectedMovie}></MovieModal>
-      )}
+      {ModalOpen && selectedMovie && <MovieModal onClose={closeModal} movie={selectedMovie} />}
       <Toaster />
     </>
   );

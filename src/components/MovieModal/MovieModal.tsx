@@ -4,9 +4,8 @@ import type { Movie } from '../../types/movie';
 import { useEffect } from 'react';
 
 interface MovieModalProps {
-  movie: Movie;
-  onClose: () => void;
-  children: React.ReactNode;
+  movie: Movie ;
+  onClose: () => void;  
 }
 
 const MovieModal = ({ movie, onClose }: MovieModalProps) => {
