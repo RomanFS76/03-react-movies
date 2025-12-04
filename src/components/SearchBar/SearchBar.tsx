@@ -1,9 +1,27 @@
+import toast, { Toaster } from 'react-hot-toast';
 import styles from './SearchBar.module.css';
 
 const SearchBar = () => {
   const handleSearch = (formData: FormData) => {
     const query = formData.get('query') as string;
-    console.log(query);
+
+    if (query === '') {
+      toast('Please enter your search query.', {
+        duration: 3000,
+        position: 'top-center',
+        style: {
+          background: '#fff',
+          marginTop: '100px',
+          fontSize: '18px',
+          padding: '16px 20px',
+          color: 'black',
+          fontWeight: '700',
+          border: '2px solid black',
+          borderRadius: '8px',
+        },
+      })
+      return;
+    }
   };
 
   return (
@@ -31,6 +49,7 @@ const SearchBar = () => {
           </button>
         </form>
       </div>
+      <Toaster />
     </header>
   );
 };
