@@ -11,8 +11,8 @@ const instanceTMDB = axios.create({
 });
 
 export const fetchMovies = async (query: string): Promise<Movie[]> => {
-  const responce = await instanceTMDB.get<{ results: Movie[] }>(`/3/search/movie?query=${query}`);
-  return responce.data.results;
+  const response = await instanceTMDB.get<{ results: Movie[] }>(`/3/search/movie?query=${query}`);
+  return response.data.results;
 };
 
 

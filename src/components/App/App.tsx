@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { fetchMovies } from '../../services/movieService';
 import type { Movie } from '../../types/movie';
 import SearchBar from '../SearchBar/SearchBar';
@@ -13,18 +13,14 @@ const App = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isLoader, setIsLoader] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [ModalOpen, setModalOpen] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
-
-  const openModal = () => setModalOpen(true);
 
   const closeModal = () => {
     setSelectedMovie(null);
-    setModalOpen(false)};
+  };
 
   const handleSelect = (movie: Movie) => {
     setSelectedMovie(movie);
-    openModal();
   };
 
   const handleSearch = async (query: string) => {
@@ -32,9 +28,9 @@ const App = () => {
       setMovies([]);
       setIsLoader(true);
       setIsError(false);
-      const responce = await fetchMovies(query);
+      const response = await fetchMovies(query);
 
-      if (responce.length === 0) {
+      if (response.length === 0) {
         toast('No movies found for your request.', {
           duration: 3000,
           position: 'top-center',
@@ -52,16 +48,14 @@ const App = () => {
         return;
       }
 
-      setMovies(responce);
+      setMovies(response);
     } catch {
       setIsError(true);
     } finally {
       setIsLoader(false);
     }
   };
-  useEffect(() => {
-    console.log('Movies updated:', movies);
-  }, [movies]);
+
   return (
     <>
       <SearchBar onSubmit={handleSearch} />
@@ -70,7 +64,9 @@ const App = () => {
       {movies.length > 0 && (
         <MovieGrid movies={movies} onSelect={handleSelect} />
       )}
-      {ModalOpen && selectedMovie && <MovieModal onClose={closeModal} movie={selectedMovie} />}
+      {selectedMovie && (
+        <MovieModal onClose={closeModal} movie={selectedMovie} />
+      )}
       <Toaster />
     </>
   );
